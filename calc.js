@@ -107,7 +107,7 @@
                 this.value.pop();
                 this.value.push(num);
             }
-            else if (!isOperator(cur)) {
+            else if (!isOperator(cur) || (cur === "-" && isOperator(this.value[length - 1]))) {
                 this.value[length] += num;
             }
             else {
