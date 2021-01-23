@@ -40,18 +40,21 @@
         //      Valide +, --, *, /, -
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
+            let pprev = this.value[this.value.length - 2];
             if (prev === ".") {
                 return;
             }
-            if (operator === "-" && prev === "-") {
-                this.value.pop();
-                this.value.push("+");
+            if (operator === "-" && prev === "-" && !isOperator(pprev)) {
+                this.value.push(operator);
+            }
+            else if(isOperator(prev) && isOperator(pprev)) {
+                return;
             }
             else if (isOperator(prev)) {
                 this.value.pop();
                 this.value.push(operator);
             }
-            else {
+            else{
                 this.value.push(operator);
             }
         }
