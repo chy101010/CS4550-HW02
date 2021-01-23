@@ -11,10 +11,13 @@
         switch (operator) {
             case "-":
                 num1 -= num2;
+                break;
             case "+":
                 num1 += num2;
+                break;
             case "/":
                 num1 /= num2;
+                break;
             default:
                 num1 *= num2;
         }
@@ -40,20 +43,24 @@
         //      Valide +, --, *, /, -
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
+            let pprev = this.value[this.value.length - 2];
             if (prev === ".") {
                 return;
             }
-            if (operator === "-" && prev === "-") {
-                this.value.pop();
-                this.value.push("+");
+            if (operator === "-" && prev === "-" && !isOperator(pprev)) {
+                this.value.push(operator);
+            }
+            else if(isOperator(prev) && isOperator(pprev)) {
+                return;
             }
             else if (isOperator(prev)) {
                 this.value.pop();
                 this.value.push(operator);
             }
-            else {
+            else{
                 this.value.push(operator);
             }
+
         }
 
         // Returns the this.value as String 
@@ -104,7 +111,7 @@
                 this.value.pop();
                 this.value.push(num);
             }
-            else if (!isOperator(cur)) {
+            else if (!isOperator(cur) || (cur === "-" && isOperator(this.value[length - 1]))) {
                 this.value[length] += num;
             }
             else {
