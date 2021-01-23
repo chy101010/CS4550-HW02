@@ -39,19 +39,16 @@
             this.value = ["0"];
         }
 
-        // Handles -, *, /
+      // Handles -, *, /
         //      Valide +, --, *, /, -
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
             let pprev = this.value[this.value.length - 2];
-            if (prev === ".") {
+            if (prev === "." || (isOperator(prev) && isOperator(pprev))) {
                 return;
             }
-            if (operator === "-" && prev === "-" && !isOperator(pprev)) {
+            else if (operator === "-") {
                 this.value.push(operator);
-            }
-            else if(isOperator(prev) && isOperator(pprev)) {
-                return;
             }
             else if (isOperator(prev)) {
                 this.value.pop();
