@@ -6,17 +6,22 @@
         return input === "*" || input === "/" || input === "+" || input === "-" || input === "+/=";
     }
 
-    // Execute the following: result operator num 
-    function execute(result, num, operator) {
+    // Execute the following: num1 operator(/, -, *, +) num2
+    function execute(num1, num2, operator) {
         switch (operator) {
             case "-":
-                return result - num;
+                num1 -= num2;
             case "+":
-                return result + num;
+                num1 += num2;
             case "/":
-                return result / num;
+                num1 /= num2;
             default:
-                return result * num;
+                num1 *= num2;
+        }
+        if (num1) {
+            return num1;
+        } else {
+            return 0;
         }
     }
 
@@ -25,6 +30,7 @@
     //           If the value already has a "+", then invoking "+" will likely 
     //           to result in the execution of the value
     //  "+" and "-" are not prioritize over "+" and "-"
+    //  Diving a number / 0 will be 0
     class Calculator {
         constructor() {
             this.value = ["0"];
@@ -34,10 +40,10 @@
         //      Valide +, --, *, /, -
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
-            if(prev === ".") {
+            if (prev === ".") {
                 return;
             }
-            if(operator === "-" && prev === "-") {
+            if (operator === "-" && prev === "-") {
                 this.value.pop();
                 this.value.push("+");
             }
@@ -85,7 +91,7 @@
             if (!isOperator(cur) && !cur.includes(".")) {
                 this.value[this.value.length - 1] = cur + ".";
             }
-            else if(isOperator(cur)) {
+            else if (isOperator(cur)) {
                 this.value.push(".");
             }
         }
@@ -129,7 +135,7 @@
                     }
                 }
             }
-            if (operators >= 1 && numbers >= 2 && !isNaN(result)) {
+            if (operators >= 1 && numbers >= 2) {
                 this.value = [result.toString()];
             }
             else {
