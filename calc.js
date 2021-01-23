@@ -11,10 +11,13 @@
         switch (operator) {
             case "-":
                 num1 -= num2;
+                break;
             case "+":
                 num1 += num2;
+                break;
             case "/":
                 num1 /= num2;
+                break;
             default:
                 num1 *= num2;
         }
