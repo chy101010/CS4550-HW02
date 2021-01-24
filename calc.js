@@ -159,42 +159,11 @@
             }
         }
 
-        // If the current expression in the value array is valid for executing, then treat as "=" 
-        // Else call generalOperator with "+""
-        // A valid expression: contains atleast one operator and two numbers
-        // As we are checking the expression, we should treat it as "=" until we find it is not valid.
-        // plusEnter() {
-        //     let result = 0;
-        //     let operators = 0;
-        //     let numbers = 0;
-        //     let operator = "";
-        //     for (let i = 0; i < this.value.length; i++) {
-        //         if (isOperator(this.value[i])) {
-        //             operators++;
-        //             operator = this.value[i];
-        //         } else {
-        //             numbers++;
-        //             if (operator) {
-        //                 result = execute(parseFloat(result), parseFloat(this.value[i]), operator);
-        //                 operator = "";
-        //             } else {
-        //                 result = this.value[i];
-        //             }
-        //         }
-        //     }
-        //     if (operators >= 1 && numbers >= 2) {
-        //         this.value = [result.toString()];
-        //     }
-        //     else {
-        //         this.generalOperator("+");
-        //     }
-        // }
-        
         // Implemented Prioritizing / and * over + and -
         plusEnter() {
             if(isExecutable(this.value)) {
                 const processed = executeOperators(this.value, ["*", "/"]);
-                this.value = [executeOperators(processed, ["-", "+"])[0]];
+                this.value = [executeOperators(processed, ["-", "+"])[0].toString()];
             }
             else {
                 this.generalOperator("+");
