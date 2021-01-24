@@ -28,18 +28,61 @@
         }
     }
 
+    // Checking whether the current value can be executed
+    function isExecutable(value) {
+        let numbers = 0;
+        let operators = 0;
+        if(isOperator(value[value.length - 1]) || value[value.length - 1] === ".") {
+            return false;
+        }
+        for (let i = 0; i < value.length; i++) {
+            if (isOperator(value[i])) {
+                operators++;
+            } else {
+                numbers++;
+            }
+            if (numbers >= 2 && operators == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 1+1*1*1- =
+    function executeOperators(value, operators) {
+        let pointer = -1;
+        let processed = [];
+        for (let i = 0; i < value.length; i++) {
+            const cur = value[i];
+            if(!isOperator(cur)) {
+                if(operators.includes(processed[pointer])) {
+                    processed[pointer - 1] = execute(parseFloat(processed[pointer - 1]), parseFloat(cur), processed[pointer]);
+                    processed.pop();
+                    pointer--;
+                }else{
+                    processed.push(cur);
+                    pointer++;
+                }
+            }else {
+                processed.push(cur);
+                pointer++;
+            }
+        }
+        return processed;
+    }
+
     //  This class represents a 4-function calculators.
     //  You can have at most one "+" in the value.
     //           If the value already has a "+", then invoking "+" will likely 
     //           to result in the execution of the value
-    //  "+" and "-" are not prioritize over "+" and "-"
+    //  "*" and "/" are prioritized over "+" and "-"
     //  Diving a number / 0 will be 0
     class Calculator {
         constructor() {
             this.value = ["0"];
         }
 
-      // Handles -, *, /
+        // Handles -, *, /
         //      Valide +, --, *, /, -
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
@@ -54,7 +97,7 @@
                 this.value.pop();
                 this.value.push(operator);
             }
-            else{
+            else {
                 this.value.push(operator);
             }
         }
@@ -90,11 +133,12 @@
 
         // Add demical 
         addDecimal() {
-            let cur = this.value[this.value.length - 1];
-            if (!isOperator(cur) && !cur.includes(".")) {
-                this.value[this.value.length - 1] = cur + ".";
+            let prev = this.value[this.value.length - 1];
+            let pprev = this.value[this.value.length - 2];
+            if ((!isOperator(prev) && !prev.includes(".")) || (prev === "-" && isOperator(pprev))) {
+                this.value[this.value.length - 1] = prev + ".";
             }
-            else if (isOperator(cur)) {
+            else if(isOperator(prev)){
                 this.value.push(".");
             }
         }
@@ -103,7 +147,7 @@
         addNumber(num) {
             let length = this.value.length - 1;
             let cur = this.value[length];
-            if (cur === "0") {
+            if (cur === "0" || cur === 0) {
                 this.value.pop();
                 this.value.push(num);
             }
@@ -119,27 +163,38 @@
         // Else call generalOperator with "+""
         // A valid expression: contains atleast one operator and two numbers
         // As we are checking the expression, we should treat it as "=" until we find it is not valid.
+        // plusEnter() {
+        //     let result = 0;
+        //     let operators = 0;
+        //     let numbers = 0;
+        //     let operator = "";
+        //     for (let i = 0; i < this.value.length; i++) {
+        //         if (isOperator(this.value[i])) {
+        //             operators++;
+        //             operator = this.value[i];
+        //         } else {
+        //             numbers++;
+        //             if (operator) {
+        //                 result = execute(parseFloat(result), parseFloat(this.value[i]), operator);
+        //                 operator = "";
+        //             } else {
+        //                 result = this.value[i];
+        //             }
+        //         }
+        //     }
+        //     if (operators >= 1 && numbers >= 2) {
+        //         this.value = [result.toString()];
+        //     }
+        //     else {
+        //         this.generalOperator("+");
+        //     }
+        // }
+        
+        // Implemented Prioritizing / and * over + and -
         plusEnter() {
-            let result = 0;
-            let operators = 0;
-            let numbers = 0;
-            let operator = "";
-            for (let i = 0; i < this.value.length; i++) {
-                if (isOperator(this.value[i])) {
-                    operators++;
-                    operator = this.value[i];
-                } else {
-                    numbers++;
-                    if (operator) {
-                        result = execute(parseFloat(result), parseFloat(this.value[i]), operator);
-                        operator = "";
-                    } else {
-                        result = this.value[i];
-                    }
-                }
-            }
-            if (operators >= 1 && numbers >= 2) {
-                this.value = [result.toString()];
+            if(isExecutable(this.value)) {
+                const processed = executeOperators(this.value, ["*", "/"]);
+                this.value = [executeOperators(processed, ["-", "+"])[0]];
             }
             else {
                 this.generalOperator("+");
