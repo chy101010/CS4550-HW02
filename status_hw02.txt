@@ -1,0 +1,42 @@
+Please fill in answers to the questions below:
+
+
+1. What's your name?
+Ningyu Chen
+
+2. What hostname did you deploy to?
+hw02.citronk.com
+
+3. What's the link to your repository on github with your code?
+https://github.com/chy101010/CS4550-HW02
+
+4. How many HTML / CSS tutorial exercises did you do?
+All Exercise 3
+
+5. How comfortable do you feel with HTML and CSS now?
+Know individual components but it is still quite hard to make them look good
+
+6. How many JS tutorial exercises did you do?
+Not a lot
+
+7. How comfortable do you feel with JS now?
+8/10
+
+8. Do all of your HTML pages pass the W3C HTML validator?
+(https://validator.w3.org/)
+OFF COURSE!
+
+9. Which parts of this assignment did you have trouble with, if any?
+Debugging My Calculator :< 
+
+
+
+And here's a list of tasks for grading comments. Just leave this here:
+ - Task 1
+ - Task 2
+ - Task 3
+ - Task 4
+ - Task 5
+ - Task 6
+ - Task 7
+ - Task 8
