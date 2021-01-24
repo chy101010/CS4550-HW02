@@ -33,7 +33,7 @@
         let numbers = 0;
         let operators = 0;
         const prev = value[value.length - 1];
-        if(isOperator(prev || prev === "." || prev === "-.")) {
+        if(isOperator(prev) || prev === "." || prev === "-.") {
             return false;
         }
         for (let i = 0; i < value.length; i++) {
@@ -88,7 +88,7 @@
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
             let pprev = this.value[this.value.length - 2];
-            if (prev === "." || prev === "-."|| (isOperator(prev) && isOperator(pprev))) {
+            if (prev === "-." || prev === "." || (isOperator(prev) && isOperator(pprev))) {
                 return;
             }
             else if (operator === "-") {
