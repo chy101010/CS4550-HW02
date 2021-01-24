@@ -32,7 +32,8 @@
     function isExecutable(value) {
         let numbers = 0;
         let operators = 0;
-        if(isOperator(value[value.length - 1]) || value[value.length - 1] === ".") {
+        const prev = value[value.length - 1];
+        if(isOperator(prev || prev === "." || prev === "-.")) {
             return false;
         }
         for (let i = 0; i < value.length; i++) {
@@ -87,7 +88,7 @@
         generalOperator(operator) {
             let prev = this.value[this.value.length - 1];
             let pprev = this.value[this.value.length - 2];
-            if (prev === "." || (isOperator(prev) && isOperator(pprev))) {
+            if (prev === "." || prev === "-."|| (isOperator(prev) && isOperator(pprev))) {
                 return;
             }
             else if (operator === "-") {
